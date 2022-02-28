@@ -3,9 +3,15 @@ from PIL import ImageTk, Image
 import random
 import os
 from winsound import *
+from Stats import Score, engine
+from sqlalchemy.orm import sessionmaker
+import datetime
 
 class SimonSays:
     def __init__(self, master):
+        self.Session = sessionmaker(bind=engine)
+        self.session = self.Session()
+        self.time = datetime.date.today()
         self.master = master
         self.field = Frame(self.master)
         self.field.pack()
@@ -76,6 +82,9 @@ class SimonSays:
                 pass
     
     def game_over(self):
+        self.stats = Score('Simon Says', self.time, f'Longest Streak: {len(self.sequence_list) - 1}')
+        self.session.add(self.stats)
+        self.session.commit()
         self.button_lock()
         self.start_game_button.configure(state=NORMAL)
         self.your_buttons['text'] = f'Game Over! Your Streak Was: {len(self.sequence_list) - 1}'

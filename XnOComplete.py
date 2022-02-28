@@ -1,9 +1,15 @@
 from tkinter import *
 from PIL import ImageTk, Image
 import os
+from Stats import Score, engine
+from sqlalchemy.orm import sessionmaker
+import datetime
 
 class XnOPackage:
     def __init__(self, master):
+        self.Session = sessionmaker(bind=engine)
+        self.session = self.Session()
+        self.time = datetime.date.today()
         self.master = master
         self.field = Frame(self.master)
         self.field.pack()
@@ -46,106 +52,130 @@ class XnOPackage:
         self.button_list[button_id].configure(state=DISABLED)
         self.turn_counter += 1
         self.check_winner()
-    
+
+    def stats_entry(self):
+        self.stats = Score('Tic Tac Toe', self.time, self.status_bar['text'])
+        self.session.add(self.stats)
+        self.session.commit()
+
     def check_winner(self):
         if self.button_list[0]['text'] == 'o' and self.button_list[1]['text'] == 'o' and self.button_list[2]['text'] == 'o':
             self.button_list[0]['bg'] = 'green'
             self.button_list[1]['bg'] = 'green'
             self.button_list[2]['bg'] = 'green'
             self.status_bar['text'] = 'Player O Won!'
+            self.stats_entry()
             self.game_over()
         elif self.button_list[0]['text'] == 'x' and self.button_list[1]['text'] == 'x' and self.button_list[2]['text'] == 'x':
             self.button_list[0]['bg'] = 'green'
             self.button_list[1]['bg'] = 'green'
             self.button_list[2]['bg'] = 'green'
             self.status_bar['text'] = 'Player X Won!'
+            self.stats_entry()
             self.game_over()
         elif self.button_list[0]['text'] == 'o' and self.button_list[3]['text'] == 'o' and self.button_list[6]['text'] == 'o':
             self.button_list[0]['bg'] = 'green'
             self.button_list[3]['bg'] = 'green'
             self.button_list[6]['bg'] = 'green'
             self.status_bar['text'] = 'Player O Won!'
+            self.stats_entry()
             self.game_over()
         elif self.button_list[0]['text'] == 'x' and self.button_list[3]['text'] == 'x' and self.button_list[6]['text'] == 'x':
             self.button_list[0]['bg'] = 'green'
             self.button_list[3]['bg'] = 'green'
             self.button_list[6]['bg'] = 'green'
             self.status_bar['text'] = 'Player X Won!'
+            self.stats_entry()
             self.game_over()
         elif self.button_list[1]['text'] == 'o' and self.button_list[4]['text'] == 'o' and self.button_list[7]['text'] == 'o':
             self.button_list[1]['bg'] = 'green'
             self.button_list[4]['bg'] = 'green'
             self.button_list[7]['bg'] = 'green'
             self.status_bar['text'] = 'Player O Won!'
+            self.stats_entry()
             self.game_over()
         elif self.button_list[1]['text'] == 'x' and self.button_list[4]['text'] == 'x' and self.button_list[7]['text'] == 'x':
             self.button_list[1]['bg'] = 'green'
             self.button_list[4]['bg'] = 'green'
             self.button_list[7]['bg'] = 'green'
             self.status_bar['text'] = 'Player X Won!'
+            self.stats_entry()
             self.game_over()
         elif self.button_list[2]['text'] == 'o' and self.button_list[5]['text'] == 'o' and self.button_list[8]['text'] == 'o':
             self.button_list[2]['bg'] = 'green'
             self.button_list[5]['bg'] = 'green'
             self.button_list[8]['bg'] = 'green'
             self.status_bar['text'] = 'Player O Won!'
+            self.stats_entry()
             self.game_over()
         elif self.button_list[2]['text'] == 'x' and self.button_list[5]['text'] == 'x' and self.button_list[8]['text'] == 'x':
             self.button_list[2]['bg'] = 'green'
             self.button_list[5]['bg'] = 'green'
             self.button_list[8]['bg'] = 'green'
             self.status_bar['text'] = 'Player X Won!'
+            self.stats_entry()
             self.game_over()
         elif self.button_list[3]['text'] == 'o' and self.button_list[4]['text'] == 'o' and self.button_list[5]['text'] == 'o':
             self.button_list[3]['bg'] = 'green'
             self.button_list[4]['bg'] = 'green'
             self.button_list[5]['bg'] = 'green'
             self.status_bar['text'] = 'Player O Won!'
+            self.stats_entry()
             self.game_over()
         elif self.button_list[3]['text'] == 'x' and self.button_list[4]['text'] == 'x' and self.button_list[5]['text'] == 'x':
             self.button_list[3]['bg'] = 'green'
             self.button_list[4]['bg'] = 'green'
             self.button_list[5]['bg'] = 'green'
             self.status_bar['text'] = 'Player X Won!'
+            self.stats_entry()
             self.game_over()
         elif self.button_list[6]['text'] == 'o' and self.button_list[7]['text'] == 'o' and self.button_list[8]['text'] == 'o':
             self.button_list[6]['bg'] = 'green'
             self.button_list[7]['bg'] = 'green'
             self.button_list[8]['bg'] = 'green'
             self.status_bar['text'] = 'Player O Won!'
+            self.stats_entry()
             self.game_over()
         elif self.button_list[6]['text'] == 'x' and self.button_list[7]['text'] == 'x' and self.button_list[8]['text'] == 'x':
             self.button_list[6]['bg'] = 'green'
             self.button_list[7]['bg'] = 'green'
             self.button_list[8]['bg'] = 'green'
             self.status_bar['text'] = 'Player X Won!'
+            self.stats_entry()
             self.game_over()
         elif self.button_list[0]['text'] == 'o' and self.button_list[4]['text'] == 'o' and self.button_list[8]['text'] == 'o':
             self.button_list[0]['bg'] = 'green'
             self.button_list[4]['bg'] = 'green'
             self.button_list[8]['bg'] = 'green'
             self.status_bar['text'] = 'Player O Won!'
+            self.stats_entry()
             self.game_over()
         elif self.button_list[0]['text'] == 'x' and self.button_list[4]['text'] == 'x' and self.button_list[8]['text'] == 'x':
             self.button_list[0]['bg'] = 'green'
             self.button_list[4]['bg'] = 'green'
             self.button_list[8]['bg'] = 'green'
             self.status_bar['text'] = 'Player X Won!'
+            self.stats_entry()
             self.game_over()
         elif self.button_list[2]['text'] == 'o' and self.button_list[4]['text'] == 'o' and self.button_list[6]['text'] == 'o':
             self.button_list[2]['bg'] = 'green'
             self.button_list[4]['bg'] = 'green'
             self.button_list[6]['bg'] = 'green'
             self.status_bar['text'] = 'Player O Won!'
+            self.stats_entry()
             self.game_over()
         elif self.button_list[2]['text'] == 'x' and self.button_list[4]['text'] == 'x' and self.button_list[6]['text'] == 'x':
             self.button_list[2]['bg'] = 'green'
             self.button_list[4]['bg'] = 'green'
             self.button_list[6]['bg'] = 'green'
             self.status_bar['text'] = 'Player X Won!'
+            self.stats_entry()
             self.game_over()
         elif self.turn_counter > 9:
             self.status_bar['text'] = 'Draw! Try Again?'
+            self.stats = Score('Tic Tac Toe', self.time, 'Draw')
+            self.session.add(self.stats)
+            self.session.commit()
     
     def game_over(self):
         for button in self.button_list:

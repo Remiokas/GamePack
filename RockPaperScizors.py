@@ -2,13 +2,19 @@ from tkinter import *
 from PIL import ImageTk, Image
 import random
 import os
+from Stats import Score, engine
+from sqlalchemy.orm import sessionmaker
+import datetime
 
 class RPS:
     def __init__(self, master):
+        self.Session = sessionmaker(bind=engine)
+        self.session = self.Session()
         self.master = master
         self.field = Frame(self.master)
         self.field.pack()
         self.cur_dir = os.getcwd()
+        self.time = datetime.date.today()
         self.player_win_index = 0
         self.computer_win_index = 0
         self.var = None
@@ -85,19 +91,28 @@ class RPS:
     def check_winner(self):
         if self.player_win_index == self.computer_win_index:
             self.status_bar['text'] = 'Tie! Play Again?'
+            self.stats = Score('Rock Paper Scissors', self.time, 'Tie')
         elif self.player_win_index == 1 and self.computer_win_index == 3:
             self.status_bar['text'] = 'You Won! Play Again?'
+            self.stats = Score('Rock Paper Scissors', self.time, 'Victory')
         elif self.player_win_index == 1 and self.computer_win_index == 2:
             self.status_bar['text'] = 'You Lose! Play Again?'
+            self.stats = Score('Rock Paper Scissors', self.time, 'Loss')
         elif self.player_win_index == 2 and self.computer_win_index == 1:
             self.status_bar['text'] = 'You Won! Play Again?'
+            self.stats = Score('Rock Paper Scissors', self.time, 'Victory')
         elif self.player_win_index == 2 and self.computer_win_index == 3:
             self.status_bar['text'] = 'You Lose! Play Again?'
+            self.stats = Score('Rock Paper Scissors', self.time, 'Loss')
         elif self.player_win_index == 3 and self.computer_win_index == 2:
             self.status_bar['text'] = 'You Won! Play Again?'
+            self.stats = Score('Rock Paper Scissors', self.time, 'Victory')
         elif self.player_win_index == 3 and self.computer_win_index == 1:
             self.status_bar['text'] = 'You Lose! Play Again?'
+            self.stats = Score('Rock Paper Scissors', self.time, 'Loss')
         self.restart_button.configure(state=NORMAL)
+        self.session.add(self.stats)
+        self.session.commit()
 
     def game_restart(self):
         self.play_choices()

@@ -3,15 +3,22 @@ from PIL import ImageTk, Image
 import random
 import os
 from winsound import *
+from Stats import Score, engine
+from sqlalchemy.orm import sessionmaker
+import datetime
 
 class Mmrgame:
     def __init__(self, master):
+        self.Session = sessionmaker(bind=engine)
+        self.session = self.Session()
+        self.time = datetime.date.today()
         self.master = master
         self.field = Frame(self.master)
         self.field.pack()
         self.cur_dir = os.getcwd()
         self.button_list = []
         self.files = []
+        self.turn_counter = 0
         self.row_marker = 0
         self.column_marker = 0
         self.cards_revealed = 0
@@ -34,9 +41,11 @@ class Mmrgame:
         self.game_start()
 
     def game_start(self):
+        self.turn_counter = 0
         random.shuffle(self.image_list)
 
     def button_click(self, button_id):
+        self.turn_counter += 1
         self.button_list[button_id].config(image=self.image_list[button_id])
         self.cards_revealed += 1
         if self.cards_revealed == 1:
@@ -65,6 +74,9 @@ class Mmrgame:
             Beep(60, 500)
 
     def game_restart(self):
+        self.stats = Score('Memory Game', self.time, f'Game Ended in {self.turn_counter} Turns')
+        self.session.add(self.stats)
+        self.session.commit()
         for x in range(16):
             self.button_list[x]['image'] = self.image_empty
             self.button_list[x].configure(state=NORMAL)
